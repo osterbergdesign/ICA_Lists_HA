@@ -6,10 +6,10 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/osterbergdesign/ica-lists-ha",
+  "documentation": "https://github.com/osterbergdesign/ICA_Lists_HA",
   "integration_type": "service",
   "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/osterbergdesign/ica-lists-ha/issues",
+  "issue_tracker": "https://github.com/osterbergdesign/ICA_Lists_HA/issues",
   "loggers": [
     "custom_components.ica_lists"
   ],

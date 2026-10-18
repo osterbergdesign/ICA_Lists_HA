@@ -18,7 +18,7 @@ Unofficial and not affiliated with ICA.
 
 ## Install
 
-1. HACS → ⋮ → **Custom repositories** → add `https://github.com/osterbergdesign/ica-lists-ha` as an **Integration**.
+1. HACS → ⋮ → **Custom repositories** → add `https://github.com/osterbergdesign/ICA_Lists_HA` as an **Integration**.
 2. Install **ICA Lists**, then restart Home Assistant.
 3. **Settings → Devices & services → Add integration → ICA Lists**.
 4. Sign in with the **personnummer and password** you use on ica.se. If you only ever use BankID, set a password at ica.se first.
