@@ -1,0 +1,7 @@
+{
+  "services": {
+    "sync_now": {
+      "service": "mdi:cart-arrow-right"
+    }
+  }
+}

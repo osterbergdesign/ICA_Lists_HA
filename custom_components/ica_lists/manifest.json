@@ -1,0 +1,18 @@
+{
+  "domain": "ica_lists",
+  "name": "ICA Lists",
+  "codeowners": [
+    "@osterbergdesign"
+  ],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/osterbergdesign/ica-lists-ha",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/osterbergdesign/ica-lists-ha/issues",
+  "loggers": [
+    "custom_components.ica_lists"
+  ],
+  "requirements": [],
+  "version": "0.1.0"
+}

@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Logga in på ICA",
+        "description": "Använd personnumret och lösenordet du loggar in på ica.se med. Om du bara använder BankID behöver du först skapa ett lösenord på ica.se.",
+        "data": {
+          "personnummer": "Personnummer",
+          "password": "Lösenord",
+          "remember_password": "Kom ihåg lösenordet"
+        },
+        "data_description": {
+          "personnummer": "ÅÅÅÅMMDD-XXXX",
+          "remember_password": "Då kan Home Assistant logga in igen själv om ICA någon gång loggar ut den. Annars blir du tillfrågad om lösenordet då."
+        }
+      },
+      "lists": {
+        "title": "Dina ICA-listor",
+        "description": "Inloggad som {name}. Välj vilka listor som ska visas i Home Assistant som att göra-listor.",
+        "data": {
+          "lists": "Listor"
+        }
+      },
+      "mirror": {
+        "title": "Spegla en lista till ICA",
+        "description": "Välj en att göra-lista i Home Assistant, till exempel din inköpslista i Google Keep. Allt som läggs till där läggs till i ICA-listan, namnbyten och borttagningar följer med, och det du bockar av i ICA-appen bockas av där också. Lämna tomt för att hoppa över.",
+        "data": {
+          "mirror_source": "Lista i Home Assistant",
+          "mirror_list": "ICA-lista",
+          "mirror_import": "Kopiera även varor som läggs till i ICA-appen till listan i Home Assistant"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Logga in på ICA igen",
+        "description": "ICA behöver lösenordet för {account} igen.",
+        "data": {
+          "password": "Lösenord",
+          "remember_password": "Kom ihåg lösenordet"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "ICA godkände inte personnumret och lösenordet. Konton med bara BankID behöver ett lösenord; skapa ett på ica.se.",
+      "invalid_personnummer": "Det ser inte ut som ett personnummer (ÅÅÅÅMMDD-XXXX).",
+      "cannot_connect": "Kunde inte nå ICA: {detail}",
+      "geo_blocked": "ICA svarar bara på anslutningar från Sverige. Går Home Assistant via en VPN utanför Sverige?",
+      "login_flow": "ICA:s inloggning svarade något oväntat ({detail}). ICA kan ha ändrat den; kolla om det finns en uppdatering av ICA Lists.",
+      "api_error": "Inloggad, men ICA ville inte visa listorna: {detail}",
+      "unknown": "Oväntat fel ({detail}). Se Home Assistants logg.",
+      "mirror_self": "Välj en lista som inte är en av ICA-listorna själva.",
+      "source_not_found": "Den att göra-listan finns inte."
+    },
+    "abort": {
+      "already_configured": "Det här ICA-kontot är redan inlagt.",
+      "reauth_successful": "Inloggad på ICA igen."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ICA Lists",
+        "data": {
+          "lists": "ICA-listor som visas som att göra-listor",
+          "mirror_source": "Lista i Home Assistant som speglas till ICA",
+          "mirror_list": "ICA-lista att spegla till",
+          "mirror_import": "Kopiera även varor som läggs till i ICA-appen till listan i Home Assistant",
+          "scan_interval": "Kolla ICA var"
+        },
+        "data_description": {
+          "mirror_source": "Lämna tomt för att sluta spegla."
+        }
+      }
+    },
+    "error": {
+      "mirror_self": "Välj en lista som inte är en av ICA-listorna själva.",
+      "source_not_found": "Den att göra-listan finns inte."
+    },
+    "abort": {
+      "not_loaded": "ICA Lists är inte igång just nu. Fixa inloggningen först och försök sedan igen."
+    }
+  },
+  "issues": {
+    "geo_blocked": {
+      "title": "ICA nekar Home Assistants anslutning",
+      "description": "ICA svarar bara på anslutningar från svenska IP-adresser. Om Home Assistants trafik går via en VPN eller proxy utanför Sverige, låt ICA (ims.icagruppen.se och apimgw-pub.ica.se) gå förbi den."
+    },
+    "mirror_list_missing": {
+      "title": "ICA-listan att spegla till finns inte längre",
+      "description": "{source} speglas inte eftersom den valda ICA-listan inte finns längre. Välj en annan under ICA Lists → Konfigurera."
+    }
+  },
+  "services": {
+    "sync_now": {
+      "name": "Synka nu",
+      "description": "Läser ICA-listorna och kör speglingen direkt."
+    }
+  }
+}

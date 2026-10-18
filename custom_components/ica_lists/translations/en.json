@@ -1,0 +1,98 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sign in to ICA",
+        "description": "Use the personnummer and password you sign in to ica.se with. If you only ever use BankID, set a password at ica.se first.",
+        "data": {
+          "personnummer": "Personnummer",
+          "password": "Password",
+          "remember_password": "Remember the password"
+        },
+        "data_description": {
+          "personnummer": "YYYYMMDD-XXXX",
+          "remember_password": "Lets Home Assistant sign in again by itself if ICA ever logs it out. Without it, you'll be asked for the password then."
+        }
+      },
+      "lists": {
+        "title": "Your ICA lists",
+        "description": "Signed in as {name}. Pick the lists to show in Home Assistant as to-do lists.",
+        "data": {
+          "lists": "Lists"
+        }
+      },
+      "mirror": {
+        "title": "Mirror a list into ICA",
+        "description": "Pick a Home Assistant to-do list, for example your Google Keep shopping list. Everything added there is added to the ICA list, renames and removals follow, and items you tick off in the ICA app are ticked off there too. Leave it empty to skip.",
+        "data": {
+          "mirror_source": "Home Assistant list",
+          "mirror_list": "ICA list",
+          "mirror_import": "Also copy items added in the ICA app to the Home Assistant list"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Sign in to ICA again",
+        "description": "ICA needs the password for {account} again.",
+        "data": {
+          "password": "Password",
+          "remember_password": "Remember the password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "ICA didn't accept that personnummer and password. BankID-only accounts need a password; set one at ica.se.",
+      "invalid_personnummer": "That doesn't look like a personnummer (YYYYMMDD-XXXX).",
+      "cannot_connect": "Couldn't reach ICA: {detail}",
+      "geo_blocked": "ICA only answers connections from Sweden. Is Home Assistant behind a VPN outside Sweden?",
+      "login_flow": "ICA's sign-in answered something unexpected ({detail}). ICA may have changed it; check for an update of ICA Lists.",
+      "api_error": "Signed in, but ICA wouldn't show the lists: {detail}",
+      "unknown": "Unexpected error ({detail}). See the Home Assistant log.",
+      "mirror_self": "Pick a list that isn't one of the ICA lists themselves.",
+      "source_not_found": "That to-do list doesn't exist."
+    },
+    "abort": {
+      "already_configured": "This ICA account is already set up.",
+      "reauth_successful": "Signed in to ICA again."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "ICA Lists",
+        "data": {
+          "lists": "ICA lists to show as to-do lists",
+          "mirror_source": "Home Assistant list to mirror into ICA",
+          "mirror_list": "ICA list to mirror into",
+          "mirror_import": "Also copy items added in the ICA app to the Home Assistant list",
+          "scan_interval": "Check ICA every"
+        },
+        "data_description": {
+          "mirror_source": "Leave empty to stop mirroring."
+        }
+      }
+    },
+    "error": {
+      "mirror_self": "Pick a list that isn't one of the ICA lists themselves.",
+      "source_not_found": "That to-do list doesn't exist."
+    },
+    "abort": {
+      "not_loaded": "ICA Lists isn't running right now. Sort out the sign-in first, then try again."
+    }
+  },
+  "issues": {
+    "geo_blocked": {
+      "title": "ICA is refusing Home Assistant's connection",
+      "description": "ICA only answers connections from Swedish IP addresses. If Home Assistant's traffic goes through a VPN or proxy outside Sweden, route ICA (ims.icagruppen.se and apimgw-pub.ica.se) around it."
+    },
+    "mirror_list_missing": {
+      "title": "The ICA list to mirror into is gone",
+      "description": "{source} isn't being mirrored because the chosen ICA list no longer exists. Pick another one under ICA Lists → Configure."
+    }
+  },
+  "services": {
+    "sync_now": {
+      "name": "Sync now",
+      "description": "Reads the ICA lists and runs the mirror right away."
+    }
+  }
+}

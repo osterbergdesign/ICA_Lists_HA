@@ -1,0 +1,33 @@
+ICA Lists is licensed under the MIT License (see LICENSE).
+
+How ICA's login and shopping-list API work was learned from these projects,
+all MIT licensed. The client in custom_components/ica_lists/ica_api.py was
+written for this project but follows the protocol they documented:
+
+- kanylbullen/ica-mcp               https://github.com/kanylbullen/ica-mcp
+  Copyright (c) 2026 kanylbullen
+- daha/ha-ica-shopping-barcode      https://github.com/daha/ha-ica-shopping-barcode
+  Copyright (c) 2026 David Haglund
+- whiteout12/ha-ica-shopping-list   https://github.com/whiteout12/ha-ica-shopping-list
+  Copyright (c) 2026 Björn Carlsson
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+ICA Lists is not affiliated with or endorsed by ICA. It uses ICA's private
+API, which ICA can change at any time.
