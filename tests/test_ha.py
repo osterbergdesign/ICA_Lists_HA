@@ -52,6 +52,7 @@ def point_at(base: str) -> None:
     api = sys.modules["custom_components.ica_lists.ica_api"]
     api.IMS_BASE = base
     api.API_BASE = base
+    api.API_BASES = (base,)
 
 
 async def start_flow(hass, base):

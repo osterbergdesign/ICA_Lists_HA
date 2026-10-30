@@ -53,6 +53,7 @@ class FakeIca:
         self.reject_refresh = False
         self.kill_access = False  # API answers 401 to the current access token once
         self.grant_form_without_action = False
+        self.lists_gone = False  # the list API moved away from this host (F5 404)
         # state
         self.clients: dict[str, dict] = {}
         self.boot_tokens: set[str] = set()
@@ -278,6 +279,9 @@ class FakeIca:
         return None
 
     async def lists(self, request: web.Request) -> web.Response:
+        if self.lists_gone:
+            return web.json_response({"code": "404", "type": "Status report", "message": "Not Found",
+                                      "description": "The requested resource is not available."}, status=404)
         self._api_auth(request)
         self.calls.append("lists")
         return web.json_response(self.lists_data)

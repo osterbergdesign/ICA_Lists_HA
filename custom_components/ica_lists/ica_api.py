@@ -8,7 +8,8 @@ personnummer and password to the login form, then swap the code for tokens.
 That gives a short access token (about 15 minutes) and a long-lived refresh
 token, so the password is only needed again if the refresh token stops working.
 
-Lists use ICA's web shopping-list service on apimgw-pub.ica.se.
+Lists use ICA's web shopping-list service (apim-pub.gw.ica.se since 29 Oct 2026; the
+old host apimgw-pub.ica.se is kept as a fallback).
 
 The protocol was worked out by kanylbullen/ica-mcp (MIT),
 daha/ha-ica-shopping-barcode (MIT) and whiteout12/ha-ica-shopping-list (MIT).
@@ -39,7 +40,10 @@ import aiohttp
 _LOGGER = logging.getLogger(__name__)
 
 IMS_BASE = "https://ims.icagruppen.se"
-API_BASE = "https://apimgw-pub.ica.se"
+# ICA moved the list API to a new host on 29 Oct 2026 (same paths). The old one
+# is kept as a fallback in case ICA switches back or runs both for a while.
+API_BASES = ("https://apim-pub.gw.ica.se", "https://apimgw-pub.ica.se")
+API_BASE = API_BASES[0]
 
 TOKEN_PATH = "/oauth/v2/token"
 AUTHORIZE_PATH = "/oauth/v2/authorize"
@@ -765,17 +769,25 @@ class IcaClient:
         auth: IcaAuth,
         *,
         api_base: str | None = None,
+        api_bases: tuple[str, ...] | list[str] | None = None,
     ) -> None:
         self._session = session
         self._auth = auth
-        self._base = (api_base or API_BASE).rstrip("/")
+        bases = [api_base] if api_base else list(api_bases or API_BASES)
+        self._bases = [base.rstrip("/") for base in bases]
+        self._base = self._bases[0]
+
+    @property
+    def api_base(self) -> str:
+        """The API host currently in use."""
+        return self._base
 
     @property
     def auth(self) -> IcaAuth:
         return self._auth
 
     async def async_get_lists(self) -> list[IcaList]:
-        data = await self._api("GET", "/list/all")
+        data = await self._get_lists_any_host()
         lists: list[IcaList] = []
         for entry in data if isinstance(data, list) else []:
             if not isinstance(entry, dict) or not entry.get("id"):
@@ -789,6 +801,33 @@ class IcaClient:
                 IcaList(id=str(entry["id"]), name=str(entry.get("name") or "ICA"), rows=rows)
             )
         return lists
+
+    async def _get_lists_any_host(self) -> Any:
+        """Read the lists, moving to another known API host if this one is gone.
+
+        ICA has moved the API between hosts before; a 404 on the list read (or a
+        host that can't be reached) tries the others, and the one that answers
+        is used from then on, for writes too.
+        """
+        first_error: IcaError | None = None
+        for base in [self._base, *(b for b in self._bases if b != self._base)]:
+            previous, self._base = self._base, base
+            try:
+                data = await self._api("GET", "/list/all")
+            except (IcaApiError, IcaConnectionError) as err:
+                if isinstance(err, IcaApiError) and err.status != 404:
+                    self._base = previous
+                    raise
+                if isinstance(err, IcaGeoBlockedError):
+                    raise
+                first_error = first_error or err
+                self._base = previous
+                continue
+            if base != previous:
+                _LOGGER.info("ICA's list API answered at %s; using that from now on", base)
+            return data
+        assert first_error is not None
+        raise first_error
 
     async def async_add_row(self, list_id: str, text: str) -> IcaRow | None:
         """Add an item. ICA puts free text into a category by itself."""

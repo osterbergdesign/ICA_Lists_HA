@@ -228,3 +228,32 @@ async def test_update_missing_row_raises_404():
             assert err.status == 404
         else:
             raise AssertionError("expected IcaApiError")
+
+
+async def test_moves_to_the_new_api_host_when_the_old_one_404s():
+    async with fake_env() as (old, old_base, session):
+        new = FakeIca()
+        new_base = await new.start()
+        try:
+            old.lists_gone = True
+            # one login server, two API hosts that share the same tokens
+            new.access = old.access
+            new.lists_data = old.lists_data
+            auth = api.IcaAuth(session, ims_base=old_base)
+            client = api.IcaClient(session, auth, api_bases=(old_base, new_base))
+            await auth.async_login(PNR, PASSWORD)
+            lists = await client.async_get_lists()
+            assert [l.name for l in lists] == ["Handla", "Fest"]
+            assert client.api_base == new_base
+            await client.async_add_row("L-HANDLA", "Ägg")
+            assert "add:Ägg" in new.calls and "add:Ägg" not in old.calls
+            # both gone: the 404 is reported
+            new.lists_gone = True
+            try:
+                await client.async_get_lists()
+            except api.IcaApiError as err:
+                assert err.status == 404
+            else:
+                raise AssertionError("expected IcaApiError")
+        finally:
+            await new.stop()
